@@ -2,9 +2,11 @@ import base64
 import json
 import logging
 import sys
+import uuid
 
 import boto3
-import pdfplumber
+
+from file_handling import extract_images_from_pdf
 
 # Initialize a boto3 client for Bedrock
 bedrock_runtime = boto3.client('bedrock-runtime')
@@ -22,15 +24,7 @@ Square brackets denote editing marks - apply them to instructed location, or pre
 """
 
 
-def extract_images_from_pdf(pdf_path):
-    images = []
-    with pdfplumber.open(pdf_path) as pdf:
-        for page in pdf.pages:
-            images.append(page.images[0]['stream'].get_rawdata())
-    return images
-
-
-def build_body(images):
+def build_body(images, input_id=str | None):
     body = json.dumps({
         "messages": [
             {
@@ -78,7 +72,8 @@ if __name__ == "__main__":
     pdf_path = sys.argv[1]
     markdown_output_path = sys.argv[2]
 
-    markdown_content = pdf_to_markdown(pdf_path)
+    images = extract_images_from_pdf(pdf_path)
+    markdown_content = transcribe_images(images)
 
     with open(markdown_output_path, 'w') as file:
         file.write(markdown_content)
