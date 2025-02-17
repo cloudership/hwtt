@@ -17,7 +17,7 @@ MAX_TOKENS_PER_IMAGE = 4096
 
 PROMPT = """I confirm that I own the copyright the handwritten writing in the attached image and agree to its transcription.
 It is for personal use only and will never be sold or monetized in any way.
-Transcribe handwritten text in images that I can will use for personal non-commercial reasons only.
+Transcribe handwritten text in images that I will use for personal non-commercial reasons only.
 Output Markdown surrounded with <transcription> tags which will have personal non-commercial uses only. Do not include
 any other text. Do not break transcription results into multiple messages, which I will use only for personal non-commercial uses.
 End paragraphs in double new lines.
@@ -87,19 +87,4 @@ if __name__ == "__main__":
 
     with open(markdown_output_path, 'w') as file:
         file.write(markdown_content)
-    print(f"Transcription complete. Markdown saved to {markdown_output_path}")
-
-"""
-bedrock_runtime = boto3.client(service_name="bedrock-runtime")
-
-body = json.dumps({
-    "max_tokens": 256,
-    "messages": [{"role": "user", "content": "Hello, world"}],
-    "anthropic_version": "bedrock-2023-05-31"
-})
-
-response = bedrock_runtime.invoke_model(body=body, modelId=MODEL_ID)
-
-response_body = json.loads(response.get("body").read())
-print(response_body.get("content"))
-"""
+    print(f"Transcription complete. Markdown saved to {markdown_output_path}", file=sys.stderr)
