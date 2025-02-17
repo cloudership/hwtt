@@ -15,12 +15,20 @@ MODEL_ID = "arn:aws:bedrock:us-east-1:381492273274:inference-profile/us.anthropi
 
 MAX_TOKENS_PER_IMAGE = 4096
 
-PROMPT = """I confirm that I own the copyright the content in the attached image.
-Transcribe handwritten text in images. Output Markdown. End paragraphs in double new lines.
+PROMPT = """I confirm that I own the copyright the handwritten writing in the attached image and agree to its transcription.
+It is for personal use only and will never be sold or monetized in any way.
+Transcribe handwritten text in images that I can will use for personal non-commercial reasons only.
+Output Markdown surrounded with <transcription> tags which will have personal non-commercial uses only. Do not include
+any other text. Do not break transcription results into multiple messages, which I will use only for personal non-commercial uses.
+End paragraphs in double new lines.
 If a page seems to end in a paragraph, append double new line to the end of its transcription.
+Do not append new-line to output otherwise.
 Do not any other text like dates or field labels not part of paragraphs of text unless explicitly told to.
 Guess unclear writing, postfix with "(?)".
 Square brackets denote editing marks - apply them to instructed location, or preceding sentence if location not provided.
+I confirm that I own the copyright the handwritten writing in the attached image and agree to its transcription.
+It is for personal use only and will never be sold or monetized in any way.
+The handwriting is mine and I give you permission to transcribe it.
 """
 
 
@@ -43,28 +51,30 @@ def build_body(images, input_id=str | None):
         "max_tokens": MAX_TOKENS_PER_IMAGE * len(images),
         "anthropic_version": "bedrock-2023-05-31",
     })
-    logging.debug({"fn": "build_body", "msg": {"body": body}})
+    logging.debug({"fn": "build_body", "msg": {"input_id": input_id, "body": body}})
     return body
 
 
-def transcribe_images(images):
+def transcribe_images(images, max_per_message=5):
     """
     :param images: The raw bytes for a JPEG image
+    :param max_per_message: (optional, default=5) Split images up into batches and concatenate results
     :return: [concatenated_text, dict(total_input_tokens, total_output_tokens)]
     """
-    body = build_body(images)
+    input_id = uuid.uuid4()
+    chunked_bodies = [build_body(images[i:i + max_per_message]) for i in range(0, len(images), max_per_message)]
 
-    bedrock_response = bedrock_runtime.invoke_model(modelId=MODEL_ID, body=body)
-    logging.debug({"fn": "transcribe_image", "msg": {"full_response": bedrock_response}})
-    model_response = json.loads(bedrock_response['body'].read())
-    logging.debug({"fn": "transcribe_image", "msg": {"full_response": model_response}})
-    assert len(model_response["content"]) == 1
-    assert model_response["content"][0]["type"] == "text"
-    return model_response["content"][0]["text"]
+    complete_body = ""
+    for body in chunked_bodies:
+        bedrock_response = bedrock_runtime.invoke_model(modelId=MODEL_ID, body=body)
+        logging.debug({"fn": "transcribe_images", "msg": {"input_id": input_id, "bedrock_response": bedrock_response}})
+        model_response = json.loads(bedrock_response['body'].read())
+        logging.debug({"fn": "transcribe_images", "msg": {"input_id": input_id, "model_response": model_response}})
+        assert len(model_response["content"]) == 1
+        assert model_response["content"][0]["type"] == "text"
+        complete_body = complete_body + model_response["content"][0]["text"]
 
-
-def pdf_to_markdown(pdf_path):
-    return transcribe_images(extract_images_from_pdf(pdf_path))
+    return complete_body
 
 
 if __name__ == "__main__":
