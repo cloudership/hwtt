@@ -11,7 +11,7 @@ from file_handling import extract_images_from_pdf
 # Initialize a boto3 client for Bedrock
 bedrock_runtime = boto3.client('bedrock-runtime')
 
-MODEL_ID = "arn:aws:bedrock:us-east-1:381492273274:inference-profile/us.anthropic.claude-3-5-sonnet-20241022-v2:0"
+MODEL_ID = "arn:aws:bedrock:us-east-1:381492273274:inference-profile/us.anthropic.claude-3-7-sonnet-20250219-v1:0"
 
 MAX_TOKENS_PER_IMAGE = 4096
 
