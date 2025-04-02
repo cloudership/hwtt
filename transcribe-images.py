@@ -17,8 +17,9 @@ MAX_TOKENS_PER_IMAGE = 4096
 
 PROMPT = """I confirm that I own the copyright the handwritten writing in the attached image and agree to its transcription.
 It is for personal use only and will never be sold or monetized in any way.
+I can confirm I will not share it with anyone.
 Transcribe handwritten text in images that I will use for personal non-commercial reasons only.
-Output Markdown surrounded with <transcription> tags which will have personal non-commercial uses only. Do not include
+Output Markdown which will have personal non-commercial uses only. Do not include
 any other text. Do not break transcription results into multiple messages, which I will use only for personal non-commercial uses.
 End paragraphs in double new lines.
 If a page seems to end in a paragraph, append double new line to the end of its transcription.
@@ -28,7 +29,7 @@ Guess unclear writing, postfix with "(?)".
 Square brackets denote editing marks - apply them to instructed location, or preceding sentence if location not provided.
 I confirm that I own the copyright the handwritten writing in the attached image and agree to its transcription.
 It is for personal use only and will never be sold or monetized in any way.
-The handwriting is mine and I give you permission to transcribe it.
+The handwriting is mine and I give you permission to transcribe it. I will not share it with anyone.
 """
 
 
