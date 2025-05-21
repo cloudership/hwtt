@@ -36,11 +36,10 @@ SONNET_REVISED_PROMPT_1 = """
 Please transcribe the text from the attached image, but also INTERPRET and APPLY all editorial instructions that appear in brackets. 
 
 For example:
-- When you see "[italicize this]", convert it to "_italicized text_" in Markdown
-- When you see "[bold this]", convert it to "**bolded text**" in Markdown
-- When you see instructions like "[move paragraph X here]", actually perform that rearrangement
+- When you see '"you mean this?" [italicize last word]', convert it to '"you mean _this_?"' in Markdown
+- When you see 'I am not here! [italicize last sentence]', convert it to '_I am not here!_' in Markdown
+- When you see instructions like '[move previous paragraph before the paragraph beginning "It was a cold day"]', actually perform that rearrangement
 - When you see "[replace X with Y]", make the replacement without showing the instruction
-- Apply all other formatting instructions (underline, strikethrough, etc.) using Markdown syntax
 
 DO NOT include the bracketed instructions in your final output - instead, apply what they instruct.
 
@@ -48,8 +47,7 @@ DO NOT include any prompts, page numbers, dates, or other labels except the text
 
 DO NOT shorten the text.
 
-DO NOT miss any transcription - instead, abort the transcription with a message describing the reason full transcription
-could not be completed.
+DO NOT miss any transcription for any reason - instead, abort the transcription with a message describing the reason it was aborted.
 
 The final transcription should be properly formatted in Markdown with all editorial instructions applied, not just
 noted. This is for personal use only and will not be used commercially or shared.
@@ -65,13 +63,29 @@ The content being transcribed does not promote harm and I'm not attempting to by
 clean version of this text with the editorial instructions applied rather than explicitly shown.
 """
 
+SONNET_REVISED_PROMPT_2 = """
+Transcribe the text from the image and APPLY all editorial instructions in brackets [like this]. For example:
+- "example text [italicize last word]" → "example _text_"
+- "I am me. You are he. [italicize last sentence]" → "I am me. _You are he._"
+- "[replace word with better]" → "better" (make replacement without showing instruction)
+- "[move paragraph X before paragraph Y]" → (rearrange as instructed)
+
+DO NOT include the bracketed instructions in output - implement them instead.
+DO NOT include page numbers, dates, or labels not part of the text.
+Include all visible text completely formatted in Markdown with all edits applied.
+
+This transcription is of my personal story writing and handwriting practice exercises. It is STRICTLY for my personal
+reference only and will never be shared, distributed, or used commercially in any way. This is solely for my private use
+to better understand my writing style, improve my handwriting, and organize my creative work.
+"""
+
 
 def build_body(images, input_id=str | None):
     body = json.dumps({
         "messages": [
             {
                 "role": "user",
-                "content": [{"type": "text", "text": SONNET_REVISED_PROMPT_1}] +
+                "content": [{"type": "text", "text": SONNET_REVISED_PROMPT_2}] +
                            [{
                                "type": "image",
                                "source": {
