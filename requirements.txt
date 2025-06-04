@@ -1,3 +1,8 @@
 boto3~=1.36.16
 pdfplumber
 Pillow~=11.1.0
+openai
+python-dotenv
+litellm~=1.70
+--pre
+mlflow

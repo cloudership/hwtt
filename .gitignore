@@ -1,2 +1,6 @@
 /log/*
 /tmp/*
+/content/
+/data/
+/.env
+/tmp/
