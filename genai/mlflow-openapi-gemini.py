@@ -1,10 +1,15 @@
+#!/usr/bin/env python
+
 import os
 
+import mlflow
 from dotenv import load_dotenv
 from openai import OpenAI
 
 load_dotenv()
 
+mlflow.openai.autolog()
+mlflow.set_experiment("genai_openai_example")
 
 def ask_openai():
     client = OpenAI()

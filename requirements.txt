@@ -4,5 +4,4 @@ Pillow~=11.1.0
 openai
 python-dotenv
 litellm~=1.70
---pre
-mlflow
+mlflow~=3.1.0
