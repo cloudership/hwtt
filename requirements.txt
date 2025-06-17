@@ -1,7 +1,10 @@
 boto3~=1.36.16
-pdfplumber
+pdfplumber~=0.11.5
 Pillow~=11.1.0
-openai
-python-dotenv
+openai~=1.75.0
+python-dotenv~=1.1.0
 litellm~=1.70
 mlflow~=3.1.0
+
+mlflow-skinny~=3.1.0
+pandas~=2.2.3
