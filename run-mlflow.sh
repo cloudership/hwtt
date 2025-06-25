@@ -6,4 +6,4 @@ ROOT="$(dirname "${BASH_SOURCE[0]}")"
 
 . "${ROOT}/.env"
 
-mlflow ui --port 8080 --backend-store-uri "${MLFLOW_TRACKING_URI}"
+mlflow server --host 0.0.0.0 --port "${MLFLOW_TRACKING_PORT}" --backend-store-uri "${BACKEND_STORE_URI}" --artifacts-destination "${MLFLOW_ARTIFACTS}"

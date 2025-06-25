@@ -4,7 +4,7 @@ Pillow~=11.1.0
 openai~=1.75.0
 python-dotenv~=1.1.0
 litellm~=1.70
-mlflow~=3.1.0
-
-mlflow-skinny~=3.1.0
+mlflow~=3.1.1
+mlflow-skinny~=3.1.1
 pandas~=2.2.3
+tenacity~=9.1.2
