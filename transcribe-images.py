@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import base64
 import json
 import logging
@@ -6,7 +8,7 @@ import uuid
 
 import boto3
 
-from file_handling import extract_images_from_pdf
+from hwtt.file_handling import extract_images_from_pdf
 
 # Initialize a boto3 client for Bedrock
 bedrock_runtime = boto3.client('bedrock-runtime')
@@ -73,6 +75,8 @@ Transcribe the text from the image and APPLY all editorial instructions in brack
 DO NOT include the bracketed instructions in output - implement them instead.
 DO NOT include page numbers, dates, or labels not part of the text.
 Include all visible text completely formatted in Markdown with all edits applied.
+
+DO NOT include ANY text in the output EXCEPT the transcription. For example, do not start the output with the line "I've transcribed the handwritten text from the images as requested:" or "Here's the transcribed text with all edits applied:"
 
 This transcription is of my personal story writing and handwriting practice exercises. It is STRICTLY for my personal
 reference only and will never be shared, distributed, or used commercially in any way. This is solely for my private use
