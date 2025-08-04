@@ -1,21 +1,17 @@
 #!/usr/bin/env python
 
-import logging
-
-logging.getLogger().setLevel(logging.DEBUG)
-logging.getLogger("mlflow").setLevel(logging.DEBUG)
-
 import litellm
 import mlflow
 from dotenv import load_dotenv
+from mlflow.genai import register_prompt
 
 load_dotenv()
 
 mlflow.litellm.autolog()
-mlflow.set_experiment("genai_example")
+mlflow.set_experiment("genai-litellm-example")
 
 # register a prompt so we can link it when logging the model
-system_prompt = mlflow.register_prompt(
+system_prompt = register_prompt(
     name="chatbot_prompt",
     template="Answer this question: {{question}}",
     commit_message="Initial",
@@ -27,7 +23,7 @@ response = litellm.completion(
         {"role": "system", "content": "You are a helpful assistant."},
         {
             "role": "user",
-            "content": system_prompt.format(question="What is a visual display unit"),
+            "content": system_prompt.format(question="Describe a fart with emoji only"),
         },
     ],
     reasoning_effort="low",
