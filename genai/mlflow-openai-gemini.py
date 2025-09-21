@@ -17,6 +17,8 @@ def ask_gemini_flash():
         base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
     )
 
+    print(client.models.retrieve('gemini-2.5-flash'))
+
     response = client.chat.completions.create(
         model="gemini-2.5-flash-preview-05-20",
         reasoning_effort="low",

@@ -3,7 +3,7 @@ pdfplumber
 Pillow
 openai
 python-dotenv
-litellm
+litellm>=1.75.3
 mlflow>=3.2.0
 mlflow-skinny
 pandas
