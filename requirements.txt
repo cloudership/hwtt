@@ -4,7 +4,7 @@ Pillow
 openai
 python-dotenv
 litellm>=1.75.3
-mlflow>=3.2.0
+mlflow>=3.4.0
 mlflow-skinny
 pandas
 tenacity
