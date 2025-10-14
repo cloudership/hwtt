@@ -1,5 +1,6 @@
 boto3
 pdfplumber
+pypdf~=6.1.1
 Pillow
 openai
 python-dotenv
